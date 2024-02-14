@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+   <meta charset="UTF-8">
+   <title>Ошибка 403</title>
+</head>
+<body>
+   Кажется, у Вас нет доступа к данной странице...
+</body>
+<form action="/post/">
+    {% csrf_token %}
+    <button type="submit">Назад</button>
+
+  </form>
+</html>

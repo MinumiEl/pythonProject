@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %}
+{% load i18n %}
+{% load tz %}
+{% load custom_tags %}
+{% load Censorship_filter %}
+
+{% block content %}
+    <br>
+    <h3>Текст отклика:</h3><br>
+	<form method="post" enctype="multipart/form-data">
+		 {% csrf_token %}
+		{{ form.media }}
+		{{ form.as_p }}
+		<input class="btn btn-secondary" type="submit" value="Сохранить">
+	</form><br>
+    <input type=button value="Назад" class="btn btn-secondary" onClick="javascript:history.go(-1);">
+{% endblock content %}

@@ -1,0 +1,91 @@
+{% extends 'flatpages/default.html' %}
+{% load i18n %}
+{% load tz %}
+{% load custom_tags %}
+{% load Censorship_filter %}
+
+{% block title %}
+post
+{% endblock title %}
+
+{% block content %}
+
+<hr/>
+
+  <form action="" method="get">
+        {{ filterset.form.title }}
+        {{ filterset.form.categoryType }}
+        {{ filterset.form.dateCreation }}
+        <button type="submit" value="Найти">Поиск</button>
+    </form>
+
+
+
+<hr/>
+
+
+   {% if post %}
+       <table>
+           <tr>
+               <td>Дата публикации</td>
+               <td>Автор</td>
+               <td>Заголовок</td>
+               <td>Описание статьи</td>
+               <td>Категория</td>
+               {% if perms.advertisement.change_post or perms.advertisement.delete_post %}
+               <td> Действия</td>
+               {% endif %}
+
+           </tr>
+
+
+           {% for posts in post %}
+           <tr>
+
+               <td>{{ posts.dateCreation }}</td>
+               <td>{{ posts.author}}</td>
+               <td class="leftAligned"><a href=../post/{{ posts.pk }}>{{ posts.title|censor }}</a></td>
+               <td>{{ posts.text|truncatewords:20|censor }}</td>
+               <td>{{ posts.categoryType }}</td>
+               <td>{% if perms.advertisement.change_post %}
+                    {% if posts.author == request.user %}
+                   <a href={{posts.pk}}/update/>Редактировать</a>
+                    {% endif %}
+               {% endif %}</td>
+               <td>{% if perms.advertisement.delete_post %}
+                    {% if posts.author == request.user %}
+                   <a href={{posts.pk}}/delete/>Удалить</a>
+                    {% endif %}
+               {% endif %}</td>
+
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Новостей нет!</h2>
+   {% endif %}
+{# Добавляем пагинацию на страницу #}
+
+   {# Информация о предыдущих страницах #}
+   {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}

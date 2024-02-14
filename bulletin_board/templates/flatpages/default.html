@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+{% load i18n %}
+{% load tz %}
+<html lang="en">
+<head>
+    {%load static%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/">
+    <title>Post Perfect World</title>
+   <link rel="stylesheet" href="static.css" />
+    <link rel="stylesheet" href="{% static 'css/tooplate-wave-cafe.css' %}" />
+
+</head>
+<body>
+
+  <div class="tm-container">
+
+    <div class="tm-row">
+      <!-- Site Header -->
+      <div class="tm-left">
+        <div class="tm-left-inner">
+
+          <div class="tm-site-header">
+            <a href="/post/" class="img-g" style="opacity: 0; width: 200px; height: 200px;">Главное</a>
+          </div>
+          <nav class="tm-site-nav">
+            <ul class="tm-site-nav-ul">
+              <li class="tm-page-nav-item">
+                <a href="/post/" class="tm-page-link active">
+                  <i class="fas fa-mug-hot tm-page-link-icon"></i>
+                  <span>Главное</span>
+                </a>
+              </li>
+              <li class="tm-page-nav-item">{% if perms.advertisement.add_post %}
+                <a href="create/" class="tm-page-link">
+                  <i class="fas fa-users tm-page-link-icon"></i>
+                  <span>Добавить статью</span>
+                </a>{% endif %}
+              </li>
+               <li class="tm-page-nav-item">{% if perms.advertisement.add_post %}
+                <a href="{% url 'responses' %}" class="tm-page-link">
+                  <i class="fas fa-users tm-page-link-icon"></i>
+                  <span>Отклики</span>
+                </a>{% endif %}
+              </li>
+              {% if request.user.is_authenticated %}
+              <li class="tm-page-nav-item">
+                <a href="/accounts/logout/" class="tm-page-link">
+                  <i class="fas fa-comments tm-page-link-icon"></i>
+                  <span>Выход</span>
+                </a>
+              </li>
+              {% else %}
+              <li class="tm-page-nav-item">
+                <a href="/login/" class="tm-page-link">
+                  <i class="fas fa-glass-martini tm-page-link-icon"></i>
+                  <span>Авторизация</span>
+                </a>
+              </li>
+              <li class="tm-page-nav-item">
+                <a href="/accounts/register/" class="tm-page-link">
+                  <i class="fas fa-comments tm-page-link-icon"></i>
+                  <span>Регистрация</span>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="tm-right">
+        <main class="tm-main">
+          <div id="drink" class="tm-page-content">
+
+            <nav class="tm-black-bg tm-drinks-nav">
+              <hr>
+              <ul>
+                <li>
+
+                    {% if user.is_authenticated %}
+                     <p> Добро пожаловать, {{ user.get_username }}</p>
+                    {% else %}
+
+                     <p> Добро пожаловать, новый пользователь. Чтобы получить доступ ко всем возможностям сайта, пожалуйста, <a class="nav-link" href=http://127.0.0.1:8000/accounts/signup/>зарегистрируйтесь.<a/> </p>
+                    {% endif %}
+
+                       <hr>
+                </li>
+              </ul>
+            </nav>
+            <!-- Drink Menu Page -->
+            <nav class="tm-black-bg tm-drinks-nav">
+              <hr>
+              <ul>
+                <li>
+                  <a href="#" class="tm-tab-link" data-id="cold">Посты</a>
+                </li>
+              </ul>
+              <hr>
+            </nav>
+            <div id="cold" class="tm-tab-content">
+              <div class="tm-list">
+                <div class="tm-list-item">
+
+                  <div class="tm-black-bg tm-list-item-text">
+
+                    {% block content %}
+                    {{ flatpage.content }}
+                    {% endblock content %}
+
+
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+
+          </div>
+
+
+</body>
+</html>

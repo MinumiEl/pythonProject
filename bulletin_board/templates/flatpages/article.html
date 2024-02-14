@@ -1,0 +1,55 @@
+{% extends 'flatpages/default.html' %}
+{% load i18n %}
+
+{% load custom_tags %}
+
+{% block title %}
+post
+{% endblock title %}
+
+{% block content %}
+
+             <div class="container wb">
+    <div class="row centered">
+      <br><br>
+      <div class="col-lg-6">
+        <h4>Публикация № {{ posts.pk }}</h4>
+          <ul>
+              <li align="left">Дата создания: {{ posts.dateCreation|date:'d M Y' }}</li>
+              <li align="left">Категория поста: {{ posts.categoryType }}</li>
+
+          </ul>
+        <p><br><br></p>
+      </div>
+      <div class="col-lg-6">
+        <h4>Заголовок поста</h4>
+          <ul>
+              <h6>{{ posts.title }}</h6>
+
+          </ul>
+        <p><br><br></p>
+      </div>
+
+      <div class="col-lg-2"></div>
+      <h3>Содержание публикации</h3>
+      <div class="col-lg-10 col-lg-offset-1">
+        <p >{{ posts.text }}</p>
+      </div>
+    </div>
+  </div>
+
+  {% if user.is_authenticated %}
+    <br><br>
+        {% if respond == "Откликнулся" %}
+            <a style="color:red">Вы откликнулись на это объявление.</a><br>
+            <a href="{% url 'responses' %}">Посмотреть свои отклики</a>
+        {% elif respond == "Мое_объявление" %}
+            <a style="color:red">Вы не можете откликнуться на свое объявление.</a><br>
+        {% else %}
+            <a class="btn btn-secondary" href="/respond/{{posts.pk}}" role="button">Откликнуться</a>
+        {% endif %}
+    {% endif %}
+    <br><br>
+
+
+{% endblock content %}
